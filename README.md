@@ -13,5 +13,5 @@ https://guides.kontur.ru/controls/autocomplete/
 Требуется nodejs, npm
 
 ## Standalone
-*Загрузите файлы из папки standalone
-*Запустите index.html на любом веб-сервере
+* Загрузите файлы из папки standalone
+* Запустите index.html на любом веб-сервере
