@@ -41,27 +41,26 @@ class Autocomplite extends Component {
     this.inputboxBlur = this.inputboxBlur.bind(this);
     this.inputboxKeyUp = this.inputboxKeyUp.bind(this);
     this.lightboxMouseMovement = this.lightboxMouseMovement.bind(this);
-    this.lightboxMouseClick = this.lightboxMouseClick.bind(this);
+    this.lightboxHandleChoice = this.lightboxHandleChoice.bind(this);
   }
 
   search(val) {
     const value = val.toLowerCase();
-    const list = this.props.DB;
-    const len = list.length;
     const firstCharCities = [];
     const otherCities = [];
     let matchesFirst = 0, matchesOther = 0;
-    for (let i = 0; i < len; i++) {
-      const city = list[i].City.toLowerCase();
+    this.props.DB.forEach((el) => {
+      const city = el.City.toLowerCase();
       if (city.indexOf(value) == 0) {
-        if (matchesFirst < this.props.size) firstCharCities.push(list[i]);
+        if (matchesFirst < this.props.size) firstCharCities.push(el);
         matchesFirst++;
       }
       if (city.indexOf(value) != 0 && city.indexOf(value) != -1) {
-        if (matchesOther < this.props.size) otherCities.push(list[i]);
+        if (matchesOther < this.props.size) otherCities.push(el);
         matchesOther++;
       }
-    }
+    });
+
     this.setState({
       matchesForRender: firstCharCities.concat(otherCities).slice(0, this.props.size),
       matchesTotal: matchesFirst + matchesOther,
@@ -90,28 +89,23 @@ class Autocomplite extends Component {
   inputboxBlur() {
     function blurTimer() {
       if (!this.state.handleChoice) {
-        let choice = false;
-        for (let i = 0, len = this.props.DB.length; i < len; i++) {
-          if (this.props.DB[i].City.toLowerCase() == this.state.inputValue.toLowerCase()) {
-            choice = this.props.DB[i];
-            break;
-          }
-        }
+        const autoChoice = this.props.DB.filter((el) => {
+          return el.City.toLowerCase() == this.state.inputValue.toLowerCase();
+        });
 
-        if (choice !== false) {
-          this.setState({
-            status: 1,
-            focus: false,
-            inputValue: choice.City,
-          });
-        } else {
-          const status = (this.state.inputValue == '') ? 0 : (this.state.matchesForRender.length == 0) ? 3 : 2;
-          this.setState({
-            status: status,
-            focus: false,
-          });
-        }
-        this.props.onChange(choice);
+        const status = (autoChoice.length)
+          ? 1
+          : (this.state.inputValue == '')
+            ? 0
+            : (this.state.matchesForRender.length == 0)
+              ? 3
+              : 2;
+        this.setState({
+          status: status,
+          focus: false,
+          inputValue: (autoChoice.length) ? autoChoice[0].City : this.state.inputValue,
+        });
+        this.props.onChange(autoChoice[0]);
       } else {
         this.setState({
           handleChoice: false,
@@ -125,7 +119,7 @@ class Autocomplite extends Component {
   inputboxKeyUp(event) {
     switch (event.key) {
       case 'Enter':
-        this.lightboxMouseClick();
+        this.lightboxHandleChoice();
         break;
       case 'ArrowDown':
         this.setState({
@@ -149,7 +143,7 @@ class Autocomplite extends Component {
     });
   }
 
-  lightboxMouseClick() {
+  lightboxHandleChoice() {
     if (this.state.matchesForRender.length>0) {
       const choice = this.state.matchesForRender[this.state.currentOnBox];
       this.setState({
@@ -184,7 +178,7 @@ class Autocomplite extends Component {
           currentOnBox={this.state.currentOnBox}
           
           onMouseOver={this.lightboxMouseMovement}
-          onClick={this.lightboxMouseClick}
+          onClick={this.lightboxHandleChoice}
         />
         <StatusString
           status={autocompiteStatus[this.state.status]}
