@@ -44,6 +44,15 @@ class Autocomplite extends Component {
     this.lightboxHandleChoice = this.lightboxHandleChoice.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.DB.length==0) {
+      this.setState({
+        matchesForRender: nextProps.DB.slice(0, this.props.size) || [],
+        matchesTotal: nextProps.DB.length || 0,
+      });
+    }
+  }
+
   search(val) {
     const value = val.toLowerCase();
     const firstCharCities = [];
@@ -160,7 +169,7 @@ class Autocomplite extends Component {
 
   render() {
     return(
-      <div>
+      <div style={{ display: (this.props.DB.length==0) ? 'none' : 'block' }}>
         <Inputbox 
           status={autocompiteStatus[this.state.status]}
           value={this.state.inputValue}

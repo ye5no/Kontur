@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import json from './kladr.json';
+import server from './server-interface.js';
 import './App.less';
 import Autocomplite from './Autocomplite.js';
 
@@ -13,19 +13,27 @@ class App extends Component {
     super(props);
     this.state = {
       choice: falseValue,
+      DB: [],
     };
     this.onChange=this.onChange.bind(this);
+    this.getJSONServer();
   }
-  
+
   onChange(value) {
     this.setState({ choice: value || falseValue });
+  }
+
+  getJSONServer() {
+    server.getJSON((resp) => {
+      this.setState({ DB: JSON.parse(resp) });
+    });
   }
 
   render() {
     return(
       <div align="center">
         <div className="container">
-          <Autocomplite DB={json} value={this.state.choice} onChange={this.onChange} size="8" />
+          <Autocomplite DB={this.state.DB} value={this.state.choice} onChange={this.onChange} size="8" />
           <div className="otherText" align="left">
             <p>В списке городов имеются неуникальные названия, например: "Первомайское". </p>
             <p>Пользователь не сможет однозначно идентифицировать название своего населенного пункта.</p>
