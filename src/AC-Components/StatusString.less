@@ -1,0 +1,25 @@
+@mainFont: 14px 'Roboto';
+@radius: 0.4em;
+@noActiveColor: lightgrey;
+@hoverColor: lightblue;
+@activeColor: blue;
+@colorFont: #404040;
+@colorSuccess: green;
+@colorWarning: orange;
+@colorDanger: darkred;
+
+.statusString {
+  font-size: 10px;
+  &-default:extend(.statusString) {
+    color: @activeColor;
+  }
+  &-success:extend(.statusString) {
+    color: @colorSuccess;
+  }
+  &-warning:extend(.statusString) {
+    color: @colorWarning;
+  }
+  &-danger:extend(.statusString) {
+    color: @colorDanger;
+  }
+}

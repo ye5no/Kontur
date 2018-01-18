@@ -1,0 +1,40 @@
+@mainFont: 14px 'Roboto';
+@radius: 0.4em;
+@noActiveColor: lightgrey;
+@hoverColor: lightblue;
+@activeColor: blue;
+@colorFont: #404040;
+@colorSuccess: green;
+@colorWarning: orange;
+@colorDanger: darkred;
+
+.lightBox {
+  position: absolute;
+  top: 47px;
+  background-color: white;
+  border: 1px solid @activeColor;
+  border-top: transparent;
+  border-radius: @radius;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  width: 100%;
+}
+
+.lightBoxElem {
+  margin: 0;
+  padding: 0.1em 0.5em;
+  color: lighten(@colorFont, 10%);
+
+  &-hovered {
+    background-color: @activeColor;
+    color: white;
+  }
+}
+
+.boxHint {
+  margin: 0;
+  padding: 0.1em 0.5em;
+  color: contrast(@colorFont);
+  background-color: @colorFont;
+  font-size: 10px;
+}

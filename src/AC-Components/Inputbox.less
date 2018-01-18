@@ -1,0 +1,47 @@
+@mainFont: 14px 'Roboto';
+@radius: 0.4em;
+@noActiveColor: lightgrey;
+@hoverColor: lightblue;
+@activeColor: blue;
+@colorFont: #404040;
+@colorSuccess: green;
+@colorWarning: orange;
+@colorDanger: darkred;
+
+.default {
+  font: @mainFont;
+  padding: 1em;
+  margin-bottom: 0;
+  color: @colorFont;
+  border: 1px solid @noActiveColor;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: @radius;
+  &:hover {
+    border: 1px solid @hoverColor;
+  }
+  &:focus {
+    border: 1px solid @activeColor;
+  }
+}
+
+.success:extend(.default) {
+  border: 1px solid @colorSuccess;
+  &:hover {
+    border: 1px solid @hoverColor;
+  }
+}
+
+.warning:extend(.default) {
+  border: 1px solid @colorWarning;
+  &:hover {
+    border: 1px solid @hoverColor;
+  }
+}
+
+.danger:extend(.default) {
+  border: 1px solid @colorDanger;
+  &:hover {
+    border: 1px solid @hoverColor;
+  }
+}
